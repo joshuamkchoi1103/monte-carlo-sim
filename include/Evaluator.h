@@ -3,19 +3,19 @@
 
 namespace Poker {
 
-enum class HandRank : uint8_t {
-    HighCard = 0, Pair, TwoPair, ThreeOfAKind, 
-    Straight, Flush, FullHouse, FourOfAKind, StraightFlush
-};
-
 class Evaluator {
 public:
-    static HandRank evaluate(const Bitboard& board);
+    // Now returns a 32-bit hexadecimal score instead of an enum
+    static uint32_t evaluate(const Bitboard& board);
 
 private:
-    static bool hasFlush(uint64_t mask);
-    static bool hasStraight(uint64_t mask);
-    static HandRank checkMultiples(uint64_t mask);
+    // Helper to shift our hand ranks and kickers into the correct bit positions
+    static inline uint32_t buildScore(uint32_t rankCategory, uint32_t a = 0, uint32_t b = 0, uint32_t c = 0, uint32_t d = 0, uint32_t e = 0) {
+        return (rankCategory << 20) | (a << 16) | (b << 12) | (c << 8) | (d << 4) | e;
+    }
+
+    static int hasStraight(uint64_t mask);
+    static uint32_t checkMultiples(uint64_t mask);
 };
 
 } // namespace Poker
