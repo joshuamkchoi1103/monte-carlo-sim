@@ -1,0 +1,1 @@
+/usr/bin/c++  -O3 -march=native -arch arm64 -Wl,-search_paths_first -Wl,-headerpad_max_install_names CMakeFiles/BlackjackSolver.dir/src/main.cpp.o CMakeFiles/BlackjackSolver.dir/src/Shoe.cpp.o CMakeFiles/BlackjackSolver.dir/src/Simulator.cpp.o -o BlackjackSolver
