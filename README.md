@@ -50,3 +50,15 @@ mkdir build && cd build
 cmake ..
 make
 ```
+
+**2. Generate the Equity Matrix:**
+```bash
+./PokerSolver
+```
+
+**3. Render the Heatmap:**
+```bash
+cd ../scripts
+python3 visualize_poker.py
+```
+
