@@ -14,7 +14,6 @@ void Deck::reset() {
 }
 
 void Deck::removeCard(uint8_t cardIndex) {
-    // Find the card and swap-and-pop it
     for (uint8_t i = 0; i < remainingCards; ++i) {
         if (cards[i] == cardIndex) {
             remainingCards--;

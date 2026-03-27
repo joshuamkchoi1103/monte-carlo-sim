@@ -27,7 +27,7 @@ compile_commands.json
 PokerSolver
 
 # ==========================================
-# Python Artifacts (For Future Visualizations)
+# Python Artifacts
 # ==========================================
 __pycache__/
 *.py[cod]
@@ -39,8 +39,9 @@ venv/
 # Engine Outputs
 # ==========================================
 *.csv
-*.png
+#*.png
 *.json
+*.jpg
 
 # ==========================================
 # IDEs & OS Files
