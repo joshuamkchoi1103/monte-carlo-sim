@@ -1,66 +1,39 @@
 #include <iostream>
-#include <iomanip>
 #include <chrono>
-#include <fstream>
-#include <string>
-#include <algorithm>
-#include "Simulator.h"
-
-// Helper function to find the optimal move
-std::string getOptimalMove(double evStand, double evHit, double evDouble) {
-    if (evDouble > evStand && evDouble > evHit) return "D";
-    if (evHit > evStand) return "H";
-    return "S";
-}
+#include "Bitboard.h"
+#include "Evaluator.h"
 
 int main() {
-    Simulator sim;
-    const size_t ITERATIONS = 1'000'000; // 1M runouts per cell
+    using namespace Poker;
+    
+    // Create a dummy board with a Full House (Tens full of Aces)
+    Bitboard board;
+    board.addCard(8);  // Ten of Spades
+    board.addCard(21); // Ten of Hearts
+    board.addCard(34); // Ten of Diamonds
+    board.addCard(12); // Ace of Spades
+    board.addCard(25); // Ace of Hearts
+    board.addCard(40); // Random Club
+    board.addCard(41); // Random Club
 
-    std::cout << "Booting Monte Carlo Matrix Generator..." << std::endl;
-    auto start_time = std::chrono::high_resolution_clock::now();
+    const size_t ITERATIONS = 50'000'000; 
 
-    std::ofstream outFile("basic_strategy.csv");
-    outFile << "HandType,PlayerTotal,DealerCard,EV_Stand,EV_Hit,EV_Double,OptimalMove\n";
+    std::cout << "Starting Ultra-Low-Latency Bitwise Evaluator Benchmark..." << std::endl;
+    auto start = std::chrono::high_resolution_clock::now();
 
-    std::cout << "Calculating Hard Totals (5-21)..." << std::endl;
-    for (uint8_t pTotal = 5; pTotal <= 21; ++pTotal) {
-        for (uint8_t dCard = 2; dCard <= 11; ++dCard) {
-            Card dealerCard = static_cast<Card>(dCard);
-            
-            double evStand = sim.calculateEV(pTotal, false, dealerCard, Action::Stand, ITERATIONS);
-            double evHit = sim.calculateEV(pTotal, false, dealerCard, Action::Hit, ITERATIONS);
-            
-            // You can only double on your first two cards, so it's a valid starting action
-            double evDouble = sim.calculateEV(pTotal, false, dealerCard, Action::Double, ITERATIONS);
-            
-            std::string optimal = getOptimalMove(evStand, evHit, evDouble);
-
-            outFile << "Hard," << static_cast<int>(pTotal) << "," << static_cast<int>(dCard) << "," 
-                    << evStand << "," << evHit << "," << evDouble << "," << optimal << "\n";
+    int fullHouseCount = 0;
+    for (size_t i = 0; i < ITERATIONS; ++i) {
+        // Run the bitwise evaluator 50 million times
+        if (Evaluator::evaluate(board) == HandRank::FullHouse) {
+            fullHouseCount++;
         }
     }
 
-    std::cout << "Calculating Soft Totals (13-21)..." << std::endl;
-    for (uint8_t pTotal = 13; pTotal <= 21; ++pTotal) {
-        for (uint8_t dCard = 2; dCard <= 11; ++dCard) {
-            Card dealerCard = static_cast<Card>(dCard);
-            
-            double evStand = sim.calculateEV(pTotal, true, dealerCard, Action::Stand, ITERATIONS);
-            double evHit = sim.calculateEV(pTotal, true, dealerCard, Action::Hit, ITERATIONS);
-            double evDouble = sim.calculateEV(pTotal, true, dealerCard, Action::Double, ITERATIONS);
-            
-            std::string optimal = getOptimalMove(evStand, evHit, evDouble);
+    auto end = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> elapsed = end - start;
 
-            outFile << "Soft," << static_cast<int>(pTotal) << "," << static_cast<int>(dCard) << "," 
-                    << evStand << "," << evHit << "," << evDouble << "," << optimal << "\n";
-        }
-    }
-
-    outFile.close();
-    auto end_time = std::chrono::high_resolution_clock::now();
-    std::chrono::duration<double> elapsed = end_time - start_time;
-
-    std::cout << "Pipeline complete. CSV generated in " << elapsed.count() << " seconds." << std::endl;
+    std::cout << "Evaluated " << ITERATIONS << " hands in " << elapsed.count() << " seconds." << std::endl;
+    std::cout << "Throughput: " << (ITERATIONS / elapsed.count()) / 1'000'000 << " Million hands/second." << std::endl;
+    
     return 0;
 }

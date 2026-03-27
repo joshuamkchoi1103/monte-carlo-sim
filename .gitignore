@@ -1,34 +1,22 @@
 # ==========================================
-# C++ & Build Artifacts
+# C++ Build Artifacts
 # ==========================================
-# CMake
 build/
 CMakeCache.txt
 CMakeFiles/
 CMakeScripts/
 Makefile
 cmake_install.cmake
-install_manifest.txt
 compile_commands.json
-CTestTestfile.cmake
-_deps/
 
 # Compiled Object files
-*.slo
-*.lo
 *.o
 *.obj
-
-# Precompiled Headers
-*.gch
-*.pch
 
 # Compiled Dynamic & Static libraries
 *.so
 *.dylib
 *.dll
-*.lai
-*.la
 *.a
 *.lib
 
@@ -36,46 +24,29 @@ _deps/
 *.exe
 *.out
 *.app
-BlackjackSolver
+PokerSolver
 
 # ==========================================
-# Python Artifacts
+# Python Artifacts (For Future Visualizations)
 # ==========================================
-# Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
 *$py.class
-
-# Virtual Environments
 venv/
 .venv/
-env/
-.env/
 
 # ==========================================
-# Engine Outputs (Data & Visualizations)
+# Engine Outputs
 # ==========================================
-# Ignore the generated CSV datasets and heatmaps 
-# so you don't accidentally commit 100MB of data to GitHub.
 *.csv
 *.png
+*.json
 
 # ==========================================
 # IDEs & OS Files
 # ==========================================
-# VS Code
 .vscode/
-
-# CLion / IntelliJ
 .idea/
 cmake-build-*/
-
-# macOS
 .DS_Store
-.AppleDouble
-.LSOverride
-
-# Windows
 Thumbs.db
-ehthumbs.db
-Desktop.ini
