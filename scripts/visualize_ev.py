@@ -48,7 +48,7 @@ def generate_heatmap(df, hand_type, filename):
 def main():
     print("Ingesting C++ simulation data...")
     try:
-        df = pd.read_csv('../basic_strategy.csv')
+        df = pd.read_csv('basic_strategy.csv')
     except FileNotFoundError:
         print("Error: basic_strategy.csv not found.")
         return
